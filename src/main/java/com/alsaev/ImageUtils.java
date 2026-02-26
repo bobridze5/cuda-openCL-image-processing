@@ -49,4 +49,39 @@ public final class ImageUtils {
     public static void save(BufferedImage image, String outputPath) {
 
     }
+
+    public static List<ImageData> getChannels(List<BufferedImage> images){
+        return images.stream().map(ImageUtils::getChannels).toList();
+    }
+
+    public static ImageData getChannels(BufferedImage image) {
+        int w = image.getWidth();
+        int h = image.getHeight();
+
+        byte[] r = new byte[w * h];
+        byte[] g = new byte[w * h];
+        byte[] b = new byte[w * h];
+
+        for (int y = 0; y < h; y++) {
+            for (int x = 0; x < w; x++) {
+                int rgb = image.getRGB(x, y);
+                r[y * w + x] = (byte) ((rgb >> 16) & 0xFF);
+                g[y * w + x] = (byte) ((rgb >> 8) & 0xFF);
+                b[y * w + x] = (byte) (rgb & 0xFF);
+
+            }
+        }
+
+        return new ImageData(r, g, b);
+    }
+
+
+
+    public static int getIntensity(int rgb) {
+        int r = (rgb >> 16) & 0xFF;
+        int g = (rgb >> 8) & 0xFF;
+        int b = rgb & 0xFF;
+
+        return (r + g + b) / 3;
+    }
 }

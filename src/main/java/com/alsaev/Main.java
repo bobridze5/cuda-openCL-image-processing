@@ -1,7 +1,6 @@
 package com.alsaev;
 
-import java.awt.image.BufferedImage;
-import java.util.List;
+import com.alsaev.programA.CudaDilateOperation;
 
 public class Main {
     public static void main(String[] args) {
@@ -11,8 +10,11 @@ public class Main {
 //                "image3.wtf"
         };
 
-        List<BufferedImage> buffImages = ImageUtils.load(images);
-        ImageAnalyzer analyzer = new ImageAnalyzer();
+        ImageAnalyzer analyzer = ImageAnalyzer.builder()
+                .setStrategy(new CudaDilateOperation(128, 3))
+//                .setStrategy(new OpenCLYellowOperation())
+                .setTestRuns(3)
+                .build();
 
         analyzer.analyze(images);
     }

@@ -15,7 +15,7 @@ public class CudaDilateOperation implements ImageOperation {
     }
 
     @Override
-    public BufferedImage apply(BufferedImage image) {
+    public byte[] apply(byte[] image) {
         // Здесь логика CUDA
         return null;
     }

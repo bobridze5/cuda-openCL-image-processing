@@ -1,9 +1,70 @@
 package com.alsaev;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.List;
+
 public class ImageAnalyzer {
 
-    public void analyze(String... images) {
+    private final int testRuns;
+    private final ImageOperation strategy;
+    private final String outputPath;
 
+    private ImageAnalyzer(Builder builder) {
+        this.outputPath = builder.outputPath;
+        this.testRuns = builder.testRuns;
+        this.strategy = builder.strategy;
+    }
+
+    public void analyze(String... images) {
+        List<BufferedImage> bufferedImages = ImageUtils.load(images);
+        List<ImageData> imageDataList = ImageUtils.getChannels(bufferedImages);
+
+        for (int i = 0; i < images.length; i++) {
+            Timer[] timers = new Timer[testRuns];
+
+            for (int j = 0; j < testRuns; j++) {
+                Timer timer = new Timer();
+
+                timer.start();
+//                strategy.apply();
+                timer.stop();
+
+                timers[j] = timer;
+            }
+
+            StatisticsPrinter.print(images[i], timers);
+        }
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+
+    public static class Builder {
+        private int testRuns;
+        private ImageOperation strategy;
+        private String outputPath = "results";
+
+        public Builder setOutputPath(String path) {
+            this.outputPath = path;
+            return this;
+        }
+
+        public Builder setTestRuns(int testRuns) {
+            this.testRuns = testRuns;
+            return this;
+        }
+
+        public Builder setStrategy(ImageOperation strategy) {
+            this.strategy = strategy;
+            return this;
+        }
+
+        public ImageAnalyzer build() {
+            return new ImageAnalyzer(this);
+        }
     }
 }
 

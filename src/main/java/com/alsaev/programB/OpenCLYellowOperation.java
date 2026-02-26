@@ -11,7 +11,10 @@ public class OpenCLYellowOperation implements ImageOperation {
     }
 
     @Override
-    public BufferedImage apply(BufferedImage image) {
+    public byte[] apply(byte[] image) {
+
+
+
         return null;
     }
 }
