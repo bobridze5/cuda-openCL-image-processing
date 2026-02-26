@@ -50,8 +50,24 @@ public final class ImageUtils {
 
     }
 
-    public static List<ImageData> getChannels(List<BufferedImage> images){
+    public static List<ImageData> getChannels(List<BufferedImage> images) {
         return images.stream().map(ImageUtils::getChannels).toList();
+    }
+
+    public static int[] getIntensity(BufferedImage image) {
+        int w = image.getWidth();
+        int h = image.getHeight();
+
+        int[] result = new int[w * h];
+
+        for (int y = 0; y < h; y++) {
+            for (int x = 0; x < w; x++) {
+                int rgb = image.getRGB(x, y);
+                result[y * w + x] = getIntensity(rgb);
+            }
+        }
+
+        return result;
     }
 
     public static ImageData getChannels(BufferedImage image) {
@@ -74,7 +90,6 @@ public final class ImageUtils {
 
         return new ImageData(r, g, b);
     }
-
 
 
     public static int getIntensity(int rgb) {

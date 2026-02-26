@@ -7,33 +7,44 @@ import java.util.List;
 public class ImageAnalyzer {
 
     private final int testRuns;
+    private final Filter<ImageData, BufferedImage> filter;
     private final ImageOperation strategy;
     private final String outputPath;
 
     private ImageAnalyzer(Builder builder) {
         this.outputPath = builder.outputPath;
         this.testRuns = builder.testRuns;
+        this.filter = builder.filter;
         this.strategy = builder.strategy;
     }
 
     public void analyze(String... images) {
         List<BufferedImage> bufferedImages = ImageUtils.load(images);
-        List<ImageData> imageDataList = ImageUtils.getChannels(bufferedImages);
+        List<ImageData> imageFilteredData = filter.filter(bufferedImages);
 
-        for (int i = 0; i < images.length; i++) {
+        for (int i = 0; i < imageFilteredData.size(); i++) {
+            ImageData data = imageFilteredData.get(i);
+            ImageData result = null;
             Timer[] timers = new Timer[testRuns];
 
             for (int j = 0; j < testRuns; j++) {
                 Timer timer = new Timer();
+                ImageData copy = Utils.deepCopy(data);
 
                 timer.start();
-//                strategy.apply();
+                strategy.apply(copy);
                 timer.stop();
 
                 timers[j] = timer;
+
+                if (j == testRuns - 1) {
+                    result = copy;
+                }
             }
 
+//            ImageUtils.save();
             StatisticsPrinter.print(images[i], timers);
+
         }
     }
 
@@ -44,8 +55,14 @@ public class ImageAnalyzer {
 
     public static class Builder {
         private int testRuns;
+        private Filter<ImageData, BufferedImage> filter;
         private ImageOperation strategy;
         private String outputPath = "results";
+
+        public Builder setFilter(Filter<ImageData, BufferedImage> filter) {
+            this.filter = filter;
+            return this;
+        }
 
         public Builder setOutputPath(String path) {
             this.outputPath = path;
@@ -67,38 +84,3 @@ public class ImageAnalyzer {
         }
     }
 }
-
-/*
- * public void analyze(String[] ImagesPaths) {
- * List<BufferedImage> bufferedImages = ImageUtils.load(ImagesPaths);
- * List<ImageData> imageDataList = filter.filter(bufferedImages);
- * <p>
- * for (int i = 0; i < imageDataList.size(); i++) {
- * ImageData data = imageDataList.get(i);
- * ImageData result = null;
- * Timer[] timers = new Timer[testRuns];
- * <p>
- * for (int k = 0; k < testRuns; k++) {
- * ImageData copy = Utils.deepCopy(data);
- * Timer timer = new Timer();
- * <p>
- * timer.start();
- * operation.apply(copy);
- * timer.end();
- * <p>
- * timers[k] = timer;
- * <p>
- * if (k == testRuns - 1) {
- * result = copy;
- * }
- * }
- * <p>
- * BufferedImage image = ImageUtils.toBufferedImage(result);
- * ImageUtils.save(image, outputPath);
- * <p>
- * StatisticsPrinter.print(ImagesPaths[i], timers);
- * }
- * <p>
- * formatter.shutdown();
- * }
- */

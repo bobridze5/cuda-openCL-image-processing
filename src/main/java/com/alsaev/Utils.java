@@ -12,4 +12,9 @@ public final class Utils {
 
         return result;
     }
+
+    public static ImageData deepCopy(ImageData data) {
+        // TOOD: добить
+        return new ImageData(null, null, null);
+    }
 }

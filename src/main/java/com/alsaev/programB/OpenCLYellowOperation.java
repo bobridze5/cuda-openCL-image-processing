@@ -1,8 +1,7 @@
 package com.alsaev.programB;
 
+import com.alsaev.ImageData;
 import com.alsaev.ImageOperation;
-
-import java.awt.image.BufferedImage;
 
 public class OpenCLYellowOperation implements ImageOperation {
 
@@ -11,8 +10,7 @@ public class OpenCLYellowOperation implements ImageOperation {
     }
 
     @Override
-    public byte[] apply(byte[] image) {
-
+    public byte[] apply(ImageData data) {
 
 
         return null;
