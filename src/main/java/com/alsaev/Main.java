@@ -1,9 +1,13 @@
 package com.alsaev;
 
-import com.alsaev.programA.CudaDilateOperation;
-import com.alsaev.programA.DilateFilterImpl;
-import com.alsaev.programB.OpenCLYellowOperation;
-import com.alsaev.programB.YellowChannelFilter;
+import com.alsaev.analyzer.ImageAnalyzer;
+import com.alsaev.filters.ChannelsFilter;
+import com.alsaev.filters.DilateFilter;
+import com.alsaev.operations.CudaDilateOperation;
+import com.alsaev.filters.DilateFilterImpl;
+import com.alsaev.operations.ImageOperation;
+import com.alsaev.operations.OpenCLYellowOperation;
+import com.alsaev.filters.YellowChannelFilter;
 
 import java.util.List;
 

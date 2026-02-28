@@ -1,4 +1,7 @@
-package com.alsaev;
+package com.alsaev.operations;
+
+import com.alsaev.analyzer.ImageData;
+import com.alsaev.filters.Filter;
 
 import java.awt.image.BufferedImage;
 import java.util.List;

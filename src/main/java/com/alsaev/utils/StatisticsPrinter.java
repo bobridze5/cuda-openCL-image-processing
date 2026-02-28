@@ -1,6 +1,6 @@
-package com.alsaev;
+package com.alsaev.utils;
 
-public class StatisticsPrinter {
+public final class StatisticsPrinter {
     public static void print(String fileName, long duration) {
         printTitle(fileName);
         System.out.printf("Время:\t%s\n", duration);

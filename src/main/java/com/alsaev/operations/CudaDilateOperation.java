@@ -1,8 +1,7 @@
-package com.alsaev.programA;
+package com.alsaev.operations;
 
-import com.alsaev.DilateFilter;
-import com.alsaev.ImageData;
-import com.alsaev.ImageOperation;
+import com.alsaev.filters.DilateFilter;
+import com.alsaev.analyzer.ImageData;
 
 import java.util.List;
 

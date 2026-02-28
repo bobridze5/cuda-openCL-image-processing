@@ -1,4 +1,4 @@
-package com.alsaev;
+package com.alsaev.utils;
 
 public final class Timer {
     private long startTime = -1;

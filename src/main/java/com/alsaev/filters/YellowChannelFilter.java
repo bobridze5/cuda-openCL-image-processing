@@ -1,8 +1,7 @@
-package com.alsaev.programB;
+package com.alsaev.filters;
 
-import com.alsaev.ChannelsFilter;
-import com.alsaev.ImageData;
-import com.alsaev.ImageUtils;
+import com.alsaev.analyzer.ImageData;
+import com.alsaev.utils.ImageUtils;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;

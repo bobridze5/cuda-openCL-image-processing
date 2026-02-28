@@ -1,4 +1,4 @@
-package com.alsaev;
+package com.alsaev.analyzer;
 
 public record ImageData(
         int width,

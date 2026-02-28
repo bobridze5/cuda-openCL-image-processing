@@ -1,8 +1,7 @@
-package com.alsaev.programB;
+package com.alsaev.operations;
 
-import com.alsaev.ChannelsFilter;
-import com.alsaev.ImageData;
-import com.alsaev.ImageOperation;
+import com.alsaev.filters.ChannelsFilter;
+import com.alsaev.analyzer.ImageData;
 
 import java.util.List;
 

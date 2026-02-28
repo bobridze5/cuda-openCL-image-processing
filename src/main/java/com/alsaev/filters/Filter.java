@@ -1,4 +1,4 @@
-package com.alsaev;
+package com.alsaev.filters;
 
 import java.util.List;
 

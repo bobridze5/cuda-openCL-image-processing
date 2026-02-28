@@ -1,4 +1,4 @@
-package com.alsaev;
+package com.alsaev.utils;
 
 public final class Utils {
     public static byte[][] deepCopy(byte[][] source) {
@@ -11,10 +11,5 @@ public final class Utils {
         }
 
         return result;
-    }
-
-    public static ImageData deepCopy(ImageData data) {
-        // TOOD: добить
-        return new ImageData(null, null, null);
     }
 }
