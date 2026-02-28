@@ -7,11 +7,11 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Watchable;
 import java.util.Arrays;
 import java.util.List;
 
 public final class ImageUtils {
+    private static final String STANDARD_FORMAT = "png";
 
     private ImageUtils() {
     }
@@ -51,8 +51,23 @@ public final class ImageUtils {
                 .toList();
     }
 
-    public static void save(BufferedImage image, String outputPath) {
+    public static void save(BufferedImage image, String path) throws IOException {
+        save(image, Path.of(path));
+    }
 
+    public static void save(BufferedImage image, Path path) throws IOException {
+        if (path.getParent() != null) {
+            Files.createDirectories(path.getParent());
+        }
+
+        String fileName = path.getFileName().toString();
+        int dotIdx = fileName.indexOf('.');
+        String format = (dotIdx == -1) ? STANDARD_FORMAT : fileName.substring(dotIdx + 1).toLowerCase();
+
+
+        if (ImageIO.write(image, format, path.toFile())) {
+            throw new IOException("Не удалось найти Writer в системе для формата: " + format);
+        }
     }
 
     public static BufferedImage toBufferedImage(byte[] channel, int width, int height) {

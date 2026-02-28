@@ -2,6 +2,8 @@ package com.alsaev;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 
 public class ImageAnalyzer implements Analyzer<String> {
@@ -15,32 +17,47 @@ public class ImageAnalyzer implements Analyzer<String> {
         this.strategy = builder.strategy;
     }
 
+    @Override
     public void analyze(List<String> paths) {
         List<BufferedImage> bufferedImages = ImageUtils.load(paths);
         List<ImageData> imageFilteredData = strategy.getFilter().filter(bufferedImages);
 
         for (int i = 0; i < imageFilteredData.size(); i++) {
             ImageData data = imageFilteredData.get(i);
-            ImageData result = null;
             Timer[] timers = new Timer[testRuns];
+            List<byte[]> result = null;
 
             for (int j = 0; j < testRuns; j++) {
                 Timer timer = new Timer();
-                ImageData copy = Utils.deepCopy(data);
 
                 timer.start();
-                List<byte[]> list = strategy.apply(copy);
+                List<byte[]> current = strategy.apply(data);
                 timer.stop();
 
                 timers[j] = timer;
-
                 if (j == testRuns - 1) {
-                    result = copy;
+                    result = current;
                 }
             }
 
-//            ImageUtils.toBufferedImage();
-//            ImageUtils.save();
+            if (result != null) {
+                String originFileName = Path.of(paths.get(i)).getFileName().toString();
+                String baseName = originFileName.substring(0, originFileName.lastIndexOf('.'));
+
+                for (int k = 0; k < result.size(); k++) {
+                    BufferedImage image = ImageUtils.toBufferedImage(result.get(k), data.width(), data.height());
+
+                    String newName = baseName + "_" + k + ".png";
+                    String path = Path.of(outputPath, newName).toString();
+
+                    try {
+                        ImageUtils.save(image, path);
+                    } catch (IOException e) {
+
+                    }
+                }
+            }
+
             StatisticsPrinter.print(paths.get(i), timers);
 
         }
