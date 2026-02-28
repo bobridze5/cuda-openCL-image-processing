@@ -2,13 +2,14 @@ package com.alsaev.analyzer;
 
 import com.alsaev.filters.Filter;
 import com.alsaev.operations.ImageOperation;
+import com.alsaev.utils.ImageData;
 import com.alsaev.utils.ImageUtils;
-import com.alsaev.utils.StatisticsPrinter;
 import com.alsaev.utils.Timer;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ImageAnalyzer implements Analyzer<AnalysisReport, String> {
@@ -24,23 +25,39 @@ public class ImageAnalyzer implements Analyzer<AnalysisReport, String> {
 
     @Override
     public AnalysisReport analyze(List<String> paths) {
+        Timer globalTimer = new Timer();
+        globalTimer.start();
+
         List<BufferedImage> bufferedImages = ImageUtils.load(paths);
         List<ImageData> imageFilteredData = strategy.getFilter().filter(bufferedImages);
+
+        List<ImageReport> reports = new ArrayList<>();
 
         for (int i = 0; i < imageFilteredData.size(); i++) {
             ImageData data = imageFilteredData.get(i);
             String currentPath = paths.get(i);
 
             AnalysisResult benchmarkResults = runBenchmark(data);
-            saveResults(benchmarkResults.result(), data, currentPath);
-            StatisticsPrinter.print(paths.get(i), benchmarkResults.timers);
+
+            reports.add(new ImageReport(
+                    currentPath,
+                    data.width(),
+                    data.height(),
+                    benchmarkResults.timers(),
+                    benchmarkResults.result()
+            ));
         }
+
+        globalTimer.stop();
+
+        return new AnalysisReport(
+                strategy.getClass().getSimpleName(),
+                globalTimer.getDurationNano(),
+                reports
+        );
     }
 
-    private void saveResults(List<byte[]> channels, ImageData data, String sourcePath){
-
-
-
+    private void saveResults(List<byte[]> channels, ImageData data, String sourcePath) {
         if (channels != null) {
             String originFileName = Path.of(sourcePath).getFileName().toString();
             String baseName = originFileName.substring(0, originFileName.lastIndexOf('.'));
@@ -79,7 +96,6 @@ public class ImageAnalyzer implements Analyzer<AnalysisReport, String> {
 
         return new AnalysisResult(timers, result);
     }
-
 
 
     public static Builder builder() {

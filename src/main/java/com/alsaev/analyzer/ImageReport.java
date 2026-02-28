@@ -6,7 +6,6 @@ import java.util.List;
 
 public record ImageReport(
         String sourcePath,
-        String baseName,
         int width,
         int height,
         Timer[] timers,

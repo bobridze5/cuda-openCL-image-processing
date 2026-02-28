@@ -1,6 +1,8 @@
 package com.alsaev;
 
+import com.alsaev.analyzer.AnalysisReport;
 import com.alsaev.analyzer.ImageAnalyzer;
+import com.alsaev.analyzer.ImageReport;
 import com.alsaev.filters.ChannelsFilter;
 import com.alsaev.filters.DilateFilter;
 import com.alsaev.operations.CudaDilateOperation;
@@ -24,11 +26,14 @@ public class Main {
         ImageOperation<ChannelsFilter> openCL = new OpenCLYellowOperation(channelsFilter);
 
         ImageAnalyzer analyzer = ImageAnalyzer.builder()
+                .setOutputPath("results")
                 .setStrategy(cuda)
                 .setTestRuns(3)
                 .build();
 
-        analyzer.analyze(images);
+        AnalysisReport report = analyzer.analyze(images);
+        List<ImageReport> imageReports = report.reports();
+
 
     }
 }

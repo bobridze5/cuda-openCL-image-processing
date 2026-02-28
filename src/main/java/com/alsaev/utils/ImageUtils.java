@@ -1,7 +1,5 @@
 package com.alsaev.utils;
 
-import com.alsaev.analyzer.ImageData;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
