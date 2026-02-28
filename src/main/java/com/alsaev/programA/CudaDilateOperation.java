@@ -1,21 +1,31 @@
 package com.alsaev.programA;
 
+import com.alsaev.DilateFilter;
 import com.alsaev.ImageData;
 import com.alsaev.ImageOperation;
 
-public class CudaDilateOperation implements ImageOperation {
+import java.util.List;
+
+public class CudaDilateOperation implements ImageOperation<DilateFilter> {
+    private final DilateFilter filter;
     private final int step;
 
-    public CudaDilateOperation(int step) {
+    public CudaDilateOperation(DilateFilter filter, int step) {
         validateStep(step);
+        this.filter = filter;
         this.step = step;
     }
 
     @Override
-    public byte[] apply(ImageData data) {
+    public List<byte[]> apply(ImageData data) {
         System.out.println("Здесь пока пусто");
         // Здесь логика CUDA
         return null;
+    }
+
+    @Override
+    public DilateFilter getFilter() {
+        return this.filter;
     }
 
     private void validateStep(int step) {

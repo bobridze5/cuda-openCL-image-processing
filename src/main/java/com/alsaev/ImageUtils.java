@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Watchable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,6 +34,10 @@ public final class ImageUtils {
         return image;
     }
 
+    public static List<BufferedImage> load(List<String> paths) {
+        return load(paths.toArray(String[]::new));
+    }
+
     public static List<BufferedImage> load(String... paths) {
         return Arrays.stream(paths)
                 .map(Path::of)
@@ -48,6 +53,19 @@ public final class ImageUtils {
 
     public static void save(BufferedImage image, String outputPath) {
 
+    }
+
+    public static BufferedImage toBufferedImage(byte[] channel, int width, int height) {
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        int[] rgb = new int[height * width];
+
+        for (int i = 0; i < channel.length; i++) {
+            int value = channel[i] & 0xFF;
+            rgb[i] = (value << 16) | (value << 8) | value;
+        }
+
+        image.setRGB(0, 0, width, height, rgb, 0, width);
+        return image;
     }
 
     public static List<ImageData> getChannels(List<BufferedImage> images) {
@@ -88,7 +106,7 @@ public final class ImageUtils {
             }
         }
 
-        return new ImageData(r, g, b);
+        return new ImageData(w, h, r, g, b);
     }
 
 

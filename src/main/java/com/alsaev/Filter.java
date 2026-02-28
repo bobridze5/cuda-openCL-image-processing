@@ -1,6 +1,5 @@
 package com.alsaev;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface Filter<R, V> {

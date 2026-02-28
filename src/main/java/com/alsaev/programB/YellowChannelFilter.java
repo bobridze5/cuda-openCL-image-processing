@@ -1,13 +1,13 @@
 package com.alsaev.programB;
 
-import com.alsaev.Filter;
+import com.alsaev.ChannelsFilter;
 import com.alsaev.ImageData;
 import com.alsaev.ImageUtils;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
-public class OperFilter implements Filter<ImageData, BufferedImage> {
+public class YellowChannelFilter implements ChannelsFilter {
     private static final double RATIO = 0.1d;
 
     @Override
@@ -37,6 +37,6 @@ public class OperFilter implements Filter<ImageData, BufferedImage> {
             }
         }
 
-        return new ImageData(red, green, blue);
+        return new ImageData(w, h, red, green, blue);
     }
 }

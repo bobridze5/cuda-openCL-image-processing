@@ -1,16 +1,15 @@
 package com.alsaev.programA;
 
-import com.alsaev.Filter;
+import com.alsaev.DilateFilter;
 import com.alsaev.ImageData;
 import com.alsaev.ImageUtils;
 
 import java.awt.image.BufferedImage;
 
-public class DilateFilter implements Filter<ImageData, BufferedImage> {
-
+public class DilateFilterImpl implements DilateFilter {
     private final int threshold;
 
-    public DilateFilter(int threshold) {
+    public DilateFilterImpl(int threshold) {
         validateThreshold(threshold);
         this.threshold = threshold;
     }
@@ -32,7 +31,7 @@ public class DilateFilter implements Filter<ImageData, BufferedImage> {
         }
 
 
-        return new ImageData(origin, null, null);
+        return new ImageData(w, h, origin, null, null);
     }
 
     private void validateThreshold(int intensity) {

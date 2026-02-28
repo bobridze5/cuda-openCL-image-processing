@@ -1,23 +1,26 @@
 package com.alsaev;
 
 import com.alsaev.programA.CudaDilateOperation;
-import com.alsaev.programA.DilateFilter;
+import com.alsaev.programA.DilateFilterImpl;
+import com.alsaev.programB.OpenCLYellowOperation;
+import com.alsaev.programB.YellowChannelFilter;
+
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        String[] images = {
-                "results/img.png",
-//                "image1.png",
-//                "image2.jpg",
-//                "image3.wtf"
-        };
+        List<String> images = List.of(
+                "results/img.png"
+        );
 
-        String img = "results/img.png";
+        DilateFilter dilateFilter = new DilateFilterImpl(128);
+        ChannelsFilter channelsFilter = new YellowChannelFilter();
+
+        ImageOperation<DilateFilter> cuda = new CudaDilateOperation(dilateFilter, 3);
+        ImageOperation<ChannelsFilter> openCL = new OpenCLYellowOperation(channelsFilter);
 
         ImageAnalyzer analyzer = ImageAnalyzer.builder()
-                .setFilter(new DilateFilter(128))
-                .setStrategy(new CudaDilateOperation( 3))
-//                .setStrategy(new OpenCLYellowOperation())
+                .setStrategy(cuda)
                 .setTestRuns(3)
                 .build();
 

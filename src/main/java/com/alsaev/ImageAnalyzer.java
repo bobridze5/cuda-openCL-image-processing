@@ -4,23 +4,20 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-public class ImageAnalyzer {
-
-    private final int testRuns;
-    private final Filter<ImageData, BufferedImage> filter;
-    private final ImageOperation strategy;
+public class ImageAnalyzer implements Analyzer<String> {
+    private final ImageOperation<? extends Filter<ImageData, BufferedImage>> strategy;
     private final String outputPath;
+    private final int testRuns;
 
     private ImageAnalyzer(Builder builder) {
         this.outputPath = builder.outputPath;
         this.testRuns = builder.testRuns;
-        this.filter = builder.filter;
         this.strategy = builder.strategy;
     }
 
-    public void analyze(String... images) {
-        List<BufferedImage> bufferedImages = ImageUtils.load(images);
-        List<ImageData> imageFilteredData = filter.filter(bufferedImages);
+    public void analyze(List<String> paths) {
+        List<BufferedImage> bufferedImages = ImageUtils.load(paths);
+        List<ImageData> imageFilteredData = strategy.getFilter().filter(bufferedImages);
 
         for (int i = 0; i < imageFilteredData.size(); i++) {
             ImageData data = imageFilteredData.get(i);
@@ -32,7 +29,7 @@ public class ImageAnalyzer {
                 ImageData copy = Utils.deepCopy(data);
 
                 timer.start();
-                strategy.apply(copy);
+                List<byte[]> list = strategy.apply(copy);
                 timer.stop();
 
                 timers[j] = timer;
@@ -42,8 +39,9 @@ public class ImageAnalyzer {
                 }
             }
 
+//            ImageUtils.toBufferedImage();
 //            ImageUtils.save();
-            StatisticsPrinter.print(images[i], timers);
+            StatisticsPrinter.print(paths.get(i), timers);
 
         }
     }
@@ -55,14 +53,8 @@ public class ImageAnalyzer {
 
     public static class Builder {
         private int testRuns;
-        private Filter<ImageData, BufferedImage> filter;
-        private ImageOperation strategy;
+        private ImageOperation<? extends Filter<ImageData, BufferedImage>> strategy;
         private String outputPath = "results";
-
-        public Builder setFilter(Filter<ImageData, BufferedImage> filter) {
-            this.filter = filter;
-            return this;
-        }
 
         public Builder setOutputPath(String path) {
             this.outputPath = path;
@@ -74,7 +66,7 @@ public class ImageAnalyzer {
             return this;
         }
 
-        public Builder setStrategy(ImageOperation strategy) {
+        public Builder setStrategy(ImageOperation<? extends Filter<ImageData, BufferedImage>> strategy) {
             this.strategy = strategy;
             return this;
         }

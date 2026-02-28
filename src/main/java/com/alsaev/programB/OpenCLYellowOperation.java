@@ -1,18 +1,27 @@
 package com.alsaev.programB;
 
+import com.alsaev.ChannelsFilter;
 import com.alsaev.ImageData;
 import com.alsaev.ImageOperation;
 
-public class OpenCLYellowOperation implements ImageOperation {
+import java.util.List;
 
-    public OpenCLYellowOperation() {
+public class OpenCLYellowOperation implements ImageOperation<ChannelsFilter> {
+    private final ChannelsFilter filter;
 
+    public OpenCLYellowOperation(ChannelsFilter filter) {
+        this.filter = filter;
     }
 
     @Override
-    public byte[] apply(ImageData data) {
+    public List<byte[]> apply(ImageData data) {
 
 
         return null;
+    }
+
+    @Override
+    public ChannelsFilter getFilter() {
+        return this.filter;
     }
 }
