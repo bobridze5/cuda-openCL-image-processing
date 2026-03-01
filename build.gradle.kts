@@ -23,21 +23,18 @@ val jcudaClassifier = when {
 
 val jcudaVersion = "12.6.0"
 
-println(jcudaClassifier)
-
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
+    implementation("org.jocl:jocl:2.0.6")
     implementation("org.jcuda:jcuda:$jcudaVersion") {
         isTransitive = false
     }
     runtimeOnly("org.jcuda:jcuda-natives:$jcudaVersion:$jcudaClassifier")
-}
-//    runtimeOnly("org.jcuda:jcuda-natives:$jcudaVersion:$jcudaClassifier@jar")
 
-println("org.jcuda:jcuda-natives:$jcudaVersion:$jcudaClassifier@jar")
+}
 
 tasks.test {
     useJUnitPlatform()

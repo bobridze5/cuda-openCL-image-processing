@@ -2,6 +2,6 @@ package com.alsaev.analyzer;
 
 import java.util.List;
 
-public interface Analyzer<R, T> {
-    R analyze(List<T> values);
+public interface Analyzer<T> {
+    void analyze(List<T> values);
 }

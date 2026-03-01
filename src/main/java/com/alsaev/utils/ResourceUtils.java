@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,6 +28,26 @@ public final class ResourceUtils {
             throw new RuntimeException("Некорректный синтаксис пути для файла: " + fileName, e);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
+        }
+    }
+
+    public static String readResource(String fileName) {
+        try {
+            Path path = Paths.get(fileName);
+            if (Files.exists(path)) {
+                return Files.readString(path);
+            }
+
+            try (var is = ResourceUtils.class.getClassLoader().getResourceAsStream(fileName)) {
+                if (is == null) {
+                    throw new FileNotFoundException("Файл не найден: " + fileName);
+                }
+
+                return new String(is.readAllBytes(), StandardCharsets.UTF_8);
+            }
+
+        } catch (IOException e) {
+            throw new UncheckedIOException("Ошибка при чтении ресурса: " + fileName, e);
         }
     }
 }
