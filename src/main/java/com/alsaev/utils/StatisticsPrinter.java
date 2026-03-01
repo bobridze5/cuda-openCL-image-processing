@@ -1,23 +1,27 @@
 package com.alsaev.utils;
 
+import java.io.PrintStream;
+
 public final class StatisticsPrinter {
-    public static void print(String fileName, long duration) {
-        printTitle(fileName);
+    private static final String LINE = "-".repeat(20);
+
+    public static void print(PrintStream out, String filePath, long duration) {
+        printTitle(out, filePath);
         System.out.printf("Время:\t%s\n", duration);
     }
 
-    public static void print(String fileName, double duration) {
-        printTitle(fileName);
+    public static void print(PrintStream out, String filePath, double duration) {
+        printTitle(out, filePath);
         System.out.printf("Время:\t%f\n", duration);
     }
 
-    public static void print(String fileName, Timer timer) {
-        printTitle(fileName);
-        printTime(timer);
+    public static void print(PrintStream out, String filePath, Timer timer) {
+        printTitle(out, filePath);
+        printTime(out, timer);
     }
 
-    public static void print(String fileName, Timer... timers) {
-        printTitle(fileName);
+    public static void print(PrintStream out, String filePath, Timer... timers) {
+        printTitle(out, filePath);
 
         long sumNano = 0;
         double sumMs = 0;
@@ -26,31 +30,32 @@ public final class StatisticsPrinter {
         int length = timers.length;
 
         for (int i = 0; i < length; i++) {
-            System.out.println("Запуск №" + (i + 1));
-            printTime(timers[i]);
+            out.println("Запуск №" + (i + 1));
+            printTime(out, timers[i]);
             sumNano += timers[i].getDurationNano();
             sumMs += timers[i].getDurationMs();
             sumSec += timers[i].getDurationSec();
         }
-        System.out.println("-".repeat(20));
-        System.out.println("Среднее значение:");
-        System.out.printf("Наносекунды:  \t%f\n", (double) sumNano / length);
-        System.out.printf("Микросекунды:\t%f\n", sumMs / length);
-        System.out.printf("Секунды:      \t%f\n\n", sumSec / length);
+        out.println("-".repeat(20));
+        out.println("Среднее значение:");
+        out.printf("Наносекунды:  \t%f\n", (double) sumNano / length);
+        out.printf("Микросекунды:\t%f\n", sumMs / length);
+        out.printf("Секунды:      \t%f\n\n", sumSec / length);
 
     }
 
-    private static void printTime(Timer timer) {
-        System.out.printf("Время в наносекундах:  \t%d\n", timer.getDurationNano());
-        System.out.printf("Время в микросекундах: \t%f\n", timer.getDurationMs());
-        System.out.printf("Время в секундах:      \t%f\n", timer.getDurationSec());
+    private static void printTime(PrintStream out, Timer timer) {
+        out.printf("Наносекунды:  \t%d\n", timer.getDurationNano());
+        out.printf("Микросекунды: \t%f\n", timer.getDurationMs());
+        out.printf("Секунды:      \t%f\n", timer.getDurationSec());
     }
 
 
-    private static void printTitle(String fileName) {
-        System.out.println("-".repeat(fileName.length() + 4));
-        System.out.println("| " + fileName + " |");
-        System.out.println("-".repeat(fileName.length() + 4));
+    private static void printTitle(PrintStream out, String title) {
+        String border = "=".repeat(title.length() + 4);
+        out.println(border);
+        out.println("| " + title + " |");
+        out.println(border);
     }
 }
 

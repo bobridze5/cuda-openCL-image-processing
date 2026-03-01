@@ -64,8 +64,7 @@ public final class ImageUtils {
         int dotIdx = fileName.indexOf('.');
         String format = (dotIdx == -1) ? STANDARD_FORMAT : fileName.substring(dotIdx + 1).toLowerCase();
 
-
-        if (ImageIO.write(image, format, path.toFile())) {
+        if (!ImageIO.write(image, format, path.toFile())) {
             throw new IOException("Не удалось найти Writer в системе для формата: " + format);
         }
     }
