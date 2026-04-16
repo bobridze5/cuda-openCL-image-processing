@@ -6,6 +6,7 @@ build/
 .kotlin
 
 results
+benchmark_output
 
 ### IntelliJ IDEA ###
 .idea

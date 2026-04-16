@@ -17,7 +17,7 @@ public abstract class AbstractCudaOperation extends AbstractGpuOperation {
     protected CUmodule module;
     protected CUfunction function;
 
-    public AbstractCudaOperation(){
+    public AbstractCudaOperation() {
         super(DEFAULT_FILE_NAME, DEFAULT_KERNEL_NAME);
     }
 
@@ -46,12 +46,16 @@ public abstract class AbstractCudaOperation extends AbstractGpuOperation {
     }
 
     protected void execute(int width, int height, Pointer kernelParameters) {
+        execute(width, height, kernelParameters, function);
+    }
+
+    protected void execute(int width, int height, Pointer kernelParameters, CUfunction func) {
         int blockSizeX = 32;
         int blockSizeY = 32;
         int gridSizeX = (int) Math.ceil((double) width / blockSizeX);
         int gridSizeY = (int) Math.ceil((double) height / blockSizeY);
 
-        cuLaunchKernel(function,
+        cuLaunchKernel(func,
                 gridSizeX, gridSizeY, 1,
                 blockSizeX, blockSizeY, 1,
                 0, null,

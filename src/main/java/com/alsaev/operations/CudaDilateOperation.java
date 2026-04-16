@@ -3,7 +3,7 @@ package com.alsaev.operations;
 import com.alsaev.filters.DilateFilter;
 import com.alsaev.utils.ImageData;
 import jcuda.Pointer;
-import jcuda.driver.*;
+import jcuda.driver.CUdeviceptr;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public class CudaDilateOperation extends AbstractCudaOperation implements ImageO
     private static final String DEFAULT_KERNEL = "dilateKernel";
 
     private final DilateFilter filter;
-    private final int step;
+    protected final int step;
 
     public CudaDilateOperation(DilateFilter filter, int step) {
         this(filter, step, DEFAULT_PTX, DEFAULT_KERNEL);
@@ -65,7 +65,7 @@ public class CudaDilateOperation extends AbstractCudaOperation implements ImageO
 
     @Override
     public DilateFilter getFilter() {
-        return this.filter;
+        return filter;
     }
 
     private void validateStep(int step) {
@@ -73,5 +73,4 @@ public class CudaDilateOperation extends AbstractCudaOperation implements ImageO
             throw new IllegalArgumentException("Значение шага должно быть в пределах от 1 до 3 включительно");
         }
     }
-
 }
