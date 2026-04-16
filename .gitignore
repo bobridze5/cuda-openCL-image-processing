@@ -6,6 +6,7 @@ build/
 .kotlin
 
 results
+benchmark_output
 
 ### IntelliJ IDEA ###
 .idea
@@ -43,4 +44,4 @@ bin/
 .vscode/
 
 ### Mac OS ###
-.DS_Store
+.DS_Store.claude/

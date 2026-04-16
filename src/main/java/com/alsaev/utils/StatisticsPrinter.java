@@ -38,16 +38,16 @@ public final class StatisticsPrinter {
         }
         out.println("-".repeat(20));
         out.println("Среднее значение:");
-        out.printf("Наносекунды:  \t%f\n", (double) sumNano / length);
-        out.printf("Микросекунды:\t%f\n", sumMs / length);
-        out.printf("Секунды:      \t%f\n\n", sumSec / length);
+        out.printf("Наносекунды:   \t%f\n", (double) sumNano / length);
+        out.printf("Миллисекунды:  \t%f\n", sumMs / length);
+        out.printf("Секунды:       \t%f\n\n", sumSec / length);
 
     }
 
     private static void printTime(PrintStream out, Timer timer) {
-        out.printf("Наносекунды:  \t%d\n", timer.getDurationNano());
-        out.printf("Микросекунды: \t%f\n", timer.getDurationMs());
-        out.printf("Секунды:      \t%f\n", timer.getDurationSec());
+        out.printf("Наносекунды:   \t%d\n", timer.getDurationNano());
+        out.printf("Миллисекунды:  \t%f\n", timer.getDurationMs());
+        out.printf("Секунды:       \t%f\n", timer.getDurationSec());
     }
 
 
